@@ -5,6 +5,8 @@ import { Route,
           Switch 
         } from 'react-router-dom'
 import App from './App';
+import LoginView from 'views/auth/LoginView'
+import ConversationsIndex from 'views/conversations/ConversationsIndex'
 
 export const Routes = () => {
   return (
@@ -13,6 +15,8 @@ export const Routes = () => {
         <div>
           <Switch>
             <Route exact path="/" component={App} />
+            <Route path="/login" component={LoginView} />
+            <Route exact path="/conversations" component={ConversationsIndex} />
           </Switch>
         </div>
       </Router>

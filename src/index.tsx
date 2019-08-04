@@ -1,11 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import axios from 'axios'
 import { BrowserRouter as Router } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 import { Routes } from './Routes'
+import { createGlobalStyle } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: rgb(255, 254, 252);
+  }
+`
+axios.defaults.baseURL = 
+  process.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
+
+var jwt = localStorage.getItem("jwt");
+if (jwt) {
+  axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
+}
 
 ReactDOM.render(<Router>
+                  <GlobalStyle />
                   <Routes />
                 </Router>,
 document.getElementById('root'));
