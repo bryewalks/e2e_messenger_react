@@ -8,8 +8,9 @@ import { Routes } from './Routes'
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
-  body {
+  html, body {
     background-color: rgb(255, 254, 252);
+    height: 100%;
   }
 `
 axios.defaults.baseURL = 
