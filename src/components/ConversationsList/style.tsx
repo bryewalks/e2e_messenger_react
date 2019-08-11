@@ -5,8 +5,9 @@ export const StyledList = styled.div`
   overflow: hidden;
   width: 30%;
   background-color: rgb(44, 10, 122);
-  margin-bottom: -1000px;
-  padding-bottom: 1000px;
+  position: fixed;
+  top: 0;
+  left: 0;
 `
 
 export const StyledListItem = styled.h1`

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import axios from 'axios'
 import ConversationsList from 'components/ConversationsList'
+import MessageBox from 'components/MessageBox'
 
 const ConversationsIndex: React.FC = () => {
 
@@ -25,24 +26,11 @@ const ConversationsIndex: React.FC = () => {
   }
 
   return (
-    <ConversationsList />
+    <div>
+      <ConversationsList />
+      <MessageBox />
+    </div>
   )
 }
 
 export default ConversationsIndex
-
-// {conversations.map((conversation: Conversation, index) => {
-//   return <div key={index}>
-//             <p>id: {conversation.id}</p>
-//             <p>created at: {conversation.created_at}</p>
-//             <p>Author Name: {conversation.author.name}</p>
-//             <p>Receiver Name: {conversation.receiver.name}</p>
-//             {conversation.messages.map((message: ConversationMessage, index) => {
-//               return <div key={index}>
-//                         <p>id: {message.id}</p>
-//                         <p>name: {message.name}</p>
-//                         <p>body: {message.body}</p>
-//                      </div>
-//             })}
-//          </div>
-// })}
