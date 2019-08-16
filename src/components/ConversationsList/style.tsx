@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const StyledList = styled.div`
   min-height: 100%;
   overflow: hidden;
-  width: 30%;
+  width: 20%;
   background-color: rgb(44, 10, 122);
   position: fixed;
   top: 0;
