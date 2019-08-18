@@ -2,12 +2,16 @@ import * as React from 'react'
 import axios from 'axios'
 import { StyledMessage, StyledMessageBox, StyledMessageForm, StyledButton, StyledTextArea, Container } from './style'
 
-const MessageBox: React.FC = () => {
-  const [messages, setMessages] = React.useState([]);
+interface Props {
+  chatter: number
+}
 
+const MessageBox: React.FC<Props> = (props) => {
+  const [messages, setMessages] = React.useState([]);
+ 
   React.useEffect(() => {
     axios
-      .get('/api/messages/', {params: {conversation_id: 3}})
+      .get('/api/messages/', {params: {conversation_id: props.chatter}})
       .then(response => setMessages(response.data));
   }, []);
 
@@ -17,13 +21,18 @@ const MessageBox: React.FC = () => {
     name: string,
     current_user: boolean
   }
+  
+  const messageBody: HTMLElement | null = document.querySelector('#message-box');
+  if (messageBody) {
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+  }
 
   return (
     <div>
-      <StyledMessageBox>
+      <StyledMessageBox id="message-box">
    
           {messages.map((message: MessageProps, index) => {
-            return <StyledMessage>{message.body}</StyledMessage>})}
+            return <StyledMessage key={index}>{message.body}</StyledMessage>})}
     
       </StyledMessageBox>
       <StyledMessageForm>

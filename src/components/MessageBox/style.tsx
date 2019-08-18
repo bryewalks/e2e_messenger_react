@@ -1,19 +1,14 @@
 import styled from 'styled-components'
 
 export const StyledMessageBox = styled.div`
-  @media only screen and (min-width: 600px) {
-    height: 750px;
-  }
-  @media only screen and (max-width: 600px) {
-    height: 400px;
-  }
+  height: 89%;
   overflow: scroll;
   width: 80%;
   background-color: rgb(182, 181, 186);
   position: fixed;
   top: 0;
   right: 0;
-  padding-bottom: 12%;
+  margin-bottom: 12%;
 `
 
 export const StyledMessageForm = styled.form`
@@ -22,7 +17,7 @@ export const StyledMessageForm = styled.form`
   bottom: 0;
   right: 0;
   width: 80%;
-  height: 4em;
+  height: 5%;
   padding-top: 2em;
   padding-bottom: 2em;
 `
