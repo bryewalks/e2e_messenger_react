@@ -3,12 +3,17 @@ import styled from 'styled-components'
 export const StyledMessageBox = styled.div`
   height: 89%;
   overflow: scroll;
-  width: 80%;
   background-color: rgb(182, 181, 186);
+  width: 80%;
   position: fixed;
   top: 0;
   right: 0;
   margin-bottom: 12%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
 `
 
 export const StyledMessageForm = styled.form`
@@ -50,16 +55,24 @@ export const StyledTextArea = styled.textarea`
   border-color: rgb(182, 181, 186);
 `
 
-export const StyledMessage = styled.div`
-  width: 30%;
+export const StyledMessage = styled.div<{currentUser: boolean}>`
+  /* width: 30%; */
   background-color: white;
   border-radius: 3%;
   height: 50px;
-  margin: 20px;
+  margin: 2em;
   padding: 5px;
-  align-content: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  ${props => props.currentUser && `
+    background-color: #0093D6;
+  `}
 `
 
 export const Container = styled.div`
-  height: 1000px;
+  /* width: 80%;
+  position: fixed;
+  top: 0;
+  right: 0; */
 `

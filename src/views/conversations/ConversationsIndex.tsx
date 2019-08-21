@@ -4,17 +4,16 @@ import ConversationsList from 'components/ConversationsList'
 import MessageBox from 'components/MessageBox'
 
 const ConversationsIndex: React.FC = () => {
-  const [chatter, setChatter] = React.useState(0);
+  const [chatterId, setChatterId] = React.useState(0);
 
-  function chatterCallBack(userId: number): void {
-    console.log(userId)
-    setChatter(userId);
+  function chatterIdCallBack(userId: number): void {
+    setChatterId(userId);
   }
 
   return (
     <div>
-      <ConversationsList chatterCallBack={chatterCallBack}/>
-      <MessageBox chatter={chatter}/>
+      <ConversationsList chatterCallBack={chatterIdCallBack}/>
+      <MessageBox chatterId={chatterId}/>
     </div>
   )
 }
