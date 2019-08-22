@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const StyledMessageBox = styled.div`
-  height: 89%;
+  height: 90%;
   overflow: scroll;
   background-color: rgb(182, 181, 186);
   width: 80%;
@@ -56,17 +56,24 @@ export const StyledTextArea = styled.textarea`
 `
 
 export const StyledMessage = styled.div<{currentUser: boolean}>`
-  /* width: 30%; */
+  font-size: 2em;
+  max-width: 50%;
   background-color: white;
-  border-radius: 3%;
-  height: 50px;
-  margin: 2em;
-  padding: 5px;
+  border-radius: 25px;
+  margin: .5em;
+  margin-left: 20%;
+  margin-right: 40%;
+  padding: 10px 20px;
   display: flex;
-  justify-content: center;
+  border-bottom-left-radius: 0;
   flex-direction: column;
   ${props => props.currentUser && `
     background-color: #0093D6;
+    margin-left: 40%;
+    margin-right: 20%;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 0;
+    color: white;
   `}
 `
 

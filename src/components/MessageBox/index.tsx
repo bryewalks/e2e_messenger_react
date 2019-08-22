@@ -8,7 +8,7 @@ import {StyledMessage,
         Container} from './style'
 
 interface Props {
-  chatterId: number
+  conversationId: number
 }
 
 interface MessageProps {
@@ -21,13 +21,15 @@ interface MessageProps {
 const MessageBox: React.FC<Props> = (props) => {
   const [messages, setMessages] = React.useState([]);
   
-  React.useEffect(() => {
-    axios
-      .get('/api/messages/', {params: {conversation_id: props.chatterId}})
-      .then(response => {
-                          setMessages(response.data)
-                          scrollToBottom()});
-  }, [props.chatterId]);
+    React.useEffect(() => {
+    if (props.conversationId) {
+      axios
+        .get(`/api/conversations/${props.conversationId}/messages/`)
+        .then(response => {
+                            setMessages(response.data)
+                            scrollToBottom()});
+    }}, [props.conversationId]);
+  
 
   const scrollToBottom = () => {
     const messageBody: HTMLElement | null = document.querySelector('#message-box');

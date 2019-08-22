@@ -3,7 +3,20 @@ import axios from 'axios'
 import { StyledList, StyledListItem } from './style'
 
 interface Props {
-  chatterCallBack: (userId: number) => void
+  conversationCallBack: (userId: number) => void
+}
+
+interface ConversationUser {
+  id: number,
+  name: string,
+  email: string
+}
+
+interface Conversation {
+  id: number,
+  created_at: string,
+  author: ConversationUser,
+  receiver: ConversationUser,
 }
 
 const ConversationsList: React.FC<Props> = (props) => {
@@ -14,25 +27,11 @@ const ConversationsList: React.FC<Props> = (props) => {
       .get('/api/conversations/')
       .then(response => setConversations(response.data));
   }, []);
-
-
-  interface ConversationUser {
-    id: number,
-    name: string,
-    email: string
-  }
-
-  interface Conversation {
-    id: number,
-    created_at: string,
-    author: ConversationUser,
-    receiver: ConversationUser,
-  }
   
   return (
     <StyledList>
       {conversations.map((conversation: Conversation, index) => {
-        return <StyledListItem onClick={() => props.chatterCallBack(conversation.receiver.id)} key={index}>{conversation.receiver.name}</StyledListItem>})}
+        return <StyledListItem onClick={() => props.conversationCallBack(conversation.id)} key={index}>{conversation.receiver.name}</StyledListItem>})}
     </StyledList>
   )
 }
