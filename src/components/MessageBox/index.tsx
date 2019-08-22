@@ -19,7 +19,8 @@ interface MessageProps {
 }
 
 const MessageBox: React.FC<Props> = (props) => {
-  const [messages, setMessages] = React.useState([]);
+  const [messages, setMessages] = React.useState([] as any[]);
+  const [messageBody, setMessageBody] = React.useState('');
   
     React.useEffect(() => {
     if (props.conversationId) {
@@ -38,6 +39,20 @@ const MessageBox: React.FC<Props> = (props) => {
     }
   }
 
+  const submitMessage = (event: any) => {
+    event.preventDefault()
+    var formData = {
+      body: messageBody
+    }
+    axios
+    .post(`/api/conversations/${props.conversationId}/messages/`, formData)
+    .then(response => {
+                        setMessages([...messages, response.data]);
+                        scrollToBottom();
+                        setMessageBody('');
+                      });
+  }
+
   return (
     <Container>
       <StyledMessageBox id="message-box">
@@ -46,8 +61,10 @@ const MessageBox: React.FC<Props> = (props) => {
             return <StyledMessage key={index} currentUser={message.current_user}>{message.body}</StyledMessage>})}
     
       </StyledMessageBox>
-      <StyledMessageForm>
-        <StyledTextArea></StyledTextArea>
+      <StyledMessageForm onSubmit={submitMessage}>
+        <StyledTextArea
+        value={messageBody}
+        onChange={e => { setMessageBody(e.target.value) }}/>
         <StyledButton>Submit</StyledButton>
       </StyledMessageForm>
     </Container>
