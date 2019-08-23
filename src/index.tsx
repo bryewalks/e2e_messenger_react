@@ -9,7 +9,7 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
   html, body {
-    background-color: rgb(255, 254, 252);
+    background-color: rgb(182, 181, 186);;
     height: 100%;
   }
 `

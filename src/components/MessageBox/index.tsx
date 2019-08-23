@@ -49,9 +49,9 @@ const MessageBox: React.FC<Props> = (props) => {
     .then(response => {
                         setMessages([...messages, response.data]);
                         scrollToBottom();
-                        setMessageBody('');
                       });
   }
+  console.log(messageBody)
 
   return (
     <Container>
@@ -59,14 +59,13 @@ const MessageBox: React.FC<Props> = (props) => {
    
           {messages.map((message: MessageProps, index) => {
             return <StyledMessage key={index} currentUser={message.current_user}>{message.body}</StyledMessage>})}
-    
+        <StyledMessageForm onSubmit={submitMessage}>
+          <StyledTextArea
+          value={messageBody}
+          onChange={e => { setMessageBody(e.target.value)}}/>
+          <StyledButton>Submit</StyledButton>
+        </StyledMessageForm>
       </StyledMessageBox>
-      <StyledMessageForm onSubmit={submitMessage}>
-        <StyledTextArea
-        value={messageBody}
-        onChange={e => { setMessageBody(e.target.value) }}/>
-        <StyledButton>Submit</StyledButton>
-      </StyledMessageForm>
     </Container>
   )
 }

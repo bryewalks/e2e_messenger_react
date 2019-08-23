@@ -14,6 +14,9 @@ export const Wrapper = styled.div`
 `
 
 export const Container = styled.div`
-  width: 100%;
-  background-color: ${props => (props.color ? props.color : 'white')};
+  display: flex;
+  height: 100vh;
+  min-width: 100%;
+  /* width: 100%;
+  background-color: ${props => (props.color ? props.color : 'white')}; */
 `

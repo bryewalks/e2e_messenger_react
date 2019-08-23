@@ -1,5 +1,6 @@
 import * as React from 'react'
 import axios from 'axios'
+import { Container } from 'components/Globals'
 import ConversationsList from 'components/ConversationsList'
 import MessageBox from 'components/MessageBox'
 
@@ -11,10 +12,10 @@ const ConversationsIndex: React.FC = () => {
   }
 
   return (
-    <div>
+    <Container>
       <ConversationsList conversationCallBack={conversationIdCallBack}/>
       <MessageBox conversationId={conversationId}/>
-    </div>
+    </Container>
   )
 }
 
