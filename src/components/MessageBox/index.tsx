@@ -5,6 +5,7 @@ import {StyledMessage,
         StyledMessageForm,
         StyledButton,
         StyledTextArea,
+        MessageDiv,
         Container} from './style'
 
 interface Props {
@@ -56,16 +57,17 @@ const MessageBox: React.FC<Props> = (props) => {
   return (
     <Container>
       <StyledMessageBox id="message-box">
-   
+        <MessageDiv>
           {messages.map((message: MessageProps, index) => {
             return <StyledMessage key={index} currentUser={message.current_user}>{message.body}</StyledMessage>})}
-        <StyledMessageForm onSubmit={submitMessage}>
-          <StyledTextArea
+        </MessageDiv>
+      </StyledMessageBox>
+      <StyledMessageForm onSubmit={submitMessage}>
+        <StyledTextArea
           value={messageBody}
           onChange={e => { setMessageBody(e.target.value)}}/>
-          <StyledButton>Submit</StyledButton>
-        </StyledMessageForm>
-      </StyledMessageBox>
+        <StyledButton>Submit</StyledButton>
+      </StyledMessageForm>
     </Container>
   )
 }
