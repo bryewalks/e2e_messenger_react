@@ -26,19 +26,22 @@ export const StyledButton = styled.button`
   font-size: 24px;
   font-weight: bold;
   border-radius: 10px;
-  height: 100%;
+  height: 50%;
+  min-height: 30px;
   margin-top: auto;
   margin-bottom: auto;
 `
 
 export const StyledTextArea = styled.textarea`
-  flex: 3;
+  flex: 5;
   background-color: white;
   resize: none;
   outline: none;
   border-width: 3px;
   border-color: rgb(182, 181, 186);
   margin-right: 3%;
+  padding: 25px;
+  font-size: 24px;
 `
 
 export const StyledMessage = styled.div<{currentUser: boolean}>`

@@ -50,9 +50,9 @@ const MessageBox: React.FC<Props> = (props) => {
     .then(response => {
                         setMessages([...messages, response.data]);
                         scrollToBottom();
+                        setMessageBody('');
                       });
   }
-  console.log(messageBody)
 
   return (
     <Container>
