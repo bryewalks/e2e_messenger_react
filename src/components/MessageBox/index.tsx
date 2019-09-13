@@ -25,18 +25,17 @@ const MessageBox: React.FC<Props> = (props) => {
   const [messageBody, setMessageBody] = React.useState('');
   const [chats, setChats] = React.useState({} as any);
   const currentUser = localStorage.getItem('user_id')
-  console.log(currentUser)
   
-    React.useEffect(() => {
+  React.useEffect(() => {
     if (props.conversationId) {
-      let cable = createSocket()
       axios
         .get(`/api/conversations/${props.conversationId}/messages/`)
         .then(response => {
                             setMessages(response.data)
                             scrollToBottom()});
+      let cable = createSocket()
       return () => cable.disconnect();
-    }}, [props.conversationId]);
+  }}, [props.conversationId]);
   
 
   const scrollToBottom = () => {
