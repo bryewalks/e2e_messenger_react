@@ -7,7 +7,6 @@ import {StyledMessage,
         StyledTextArea,
         MessageDiv,
         Container} from './style'
-// import { createSocket } from 'dgram';
 import Cable from 'actioncable'
 
 interface Props {
@@ -18,23 +17,25 @@ interface MessageProps {
   id: number,
   body: string,
   name: string,
-  user: string
+  user_id: string
 }
 
 const MessageBox: React.FC<Props> = (props) => {
   const [messages, setMessages] = React.useState([] as any[]);
   const [messageBody, setMessageBody] = React.useState('');
   const [chats, setChats] = React.useState({} as any);
-  const [currentUser] = React.useState(localStorage.getItem("user"))
+  const currentUser = localStorage.getItem('user_id')
+  console.log(currentUser)
   
     React.useEffect(() => {
     if (props.conversationId) {
-      createSocket()
+      let cable = createSocket()
       axios
         .get(`/api/conversations/${props.conversationId}/messages/`)
         .then(response => {
                             setMessages(response.data)
                             scrollToBottom()});
+      return () => cable.disconnect();
     }}, [props.conversationId]);
   
 
@@ -48,23 +49,10 @@ const MessageBox: React.FC<Props> = (props) => {
   const submitMessage = (event: any) => {
     event.preventDefault()
     chats.create(messageBody)
-    // setMessages([...messages, messageBody]);
-    // scrollToBottom();
-    // setMessageBody('');
-    // var formData = {
-    //   body: messageBody
-    // }
-    // axios
-    // .post(`/api/conversations/${props.conversationId}/messages/`, formData)
-    // .then(response => {
-    //                     setMessages([...messages, response.data]);
-    //                     scrollToBottom();
-    //                     setMessageBody('');
-    //                   });
   }
 
   function createSocket() {
-    let cable = Cable.createConsumer(`ws://localhost:3000/api/cable`);
+    let cable = Cable.createConsumer(`ws://localhost:3000/api/cable?token=${localStorage.getItem("jwt")}`);
     // @ts-ignore
     setChats(cable.subscriptions.create({
       channel: 'MessageChannel'
@@ -72,7 +60,8 @@ const MessageBox: React.FC<Props> = (props) => {
     }, {
       connected: () => {},
       received: (data) => {
-        setMessages(messages => [...messages, data]);
+        let newData = JSON.parse(data)
+        setMessages(messages => [...messages, newData]);
         scrollToBottom();
         setMessageBody('');
       },
@@ -80,23 +69,18 @@ const MessageBox: React.FC<Props> = (props) => {
         this.perform('create', {
           body: messageContent,
           conversation_id: props.conversationId,
-          user_id: currentUser
         });
       }
     }));
+    return cable
   }
-
-
-  // console.log(messages);
-  console.log(messages);
-  
 
   return (
     <Container>
       <StyledMessageBox id="message-box">
         <MessageDiv>
           {messages.map((message: MessageProps, index) => {
-            return <StyledMessage key={index} currentUser={message.user == currentUser}>{message.body}</StyledMessage>})}
+            return <StyledMessage key={index} currentUser={message.user_id == currentUser}>{message.body}</StyledMessage>})}
         </MessageDiv>
       </StyledMessageBox>
       <StyledMessageForm onSubmit={submitMessage}>
