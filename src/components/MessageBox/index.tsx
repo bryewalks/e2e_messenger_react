@@ -7,7 +7,7 @@ import {StyledMessage,
         StyledTextArea,
         MessageDiv,
         Container} from './style'
-import Cable from 'actioncable'
+import * as Cable from 'actioncable'
 
 interface Props {
   conversationId: number
@@ -52,22 +52,21 @@ const MessageBox: React.FC<Props> = (props) => {
 
   function createSocket() {
     let cable = Cable.createConsumer(`ws://localhost:3000/api/cable?token=${localStorage.getItem("jwt")}`);
-    // @ts-ignore
     setChats(cable.subscriptions.create({
-      channel: 'MessageChannel'
-    // @ts-ignore
+      channel: 'MessageChannel',
+      conversationId: props.conversationId
+      //@ts-ignore
     }, {
       connected: () => {},
-      received: (data) => {
+      received: (data: any) => {
         let newData = JSON.parse(data)
         setMessages(messages => [...messages, newData]);
         scrollToBottom();
         setMessageBody('');
       },
-      create: function(messageContent: any) {
+      create: function(messageBody: string) {
         this.perform('create', {
-          body: messageContent,
-          conversation_id: props.conversationId,
+          body: messageBody
         });
       }
     }));
