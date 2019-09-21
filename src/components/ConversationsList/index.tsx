@@ -1,6 +1,8 @@
 import * as React from 'react'
 import axios from 'axios'
-import { StyledList, StyledListItem } from './style'
+import { Modal, ModalProvider} from '../Modal'
+import { StyledList, StyledListItem, StyledButton } from './style'
+import { Plus } from 'styled-icons/fa-solid/Plus'
 
 interface Props {
   conversationCallBack: (userId: number) => void
@@ -20,6 +22,7 @@ interface Conversation {
 }
 
 const ConversationsList: React.FC<Props> = (props) => {
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [conversations, setConversations] = React.useState([]);
 
   React.useEffect(() => {
@@ -30,8 +33,16 @@ const ConversationsList: React.FC<Props> = (props) => {
   
   return (
     <StyledList>
-      {conversations.map((conversation: Conversation, index) => {
-        return <StyledListItem onClick={() => props.conversationCallBack(conversation.id)} key={index}>{conversation.receiver.name}</StyledListItem>})}
+        {conversations.map((conversation: Conversation, index) => {
+          return <StyledListItem onClick={() => props.conversationCallBack(conversation.id)} key={index}> {conversation.receiver.name}</StyledListItem>})}
+      <ModalProvider>
+        <StyledButton onClick={() => setIsModalOpen(true)}><Plus /></StyledButton>
+          {isModalOpen && (
+            <Modal onClose={() => setIsModalOpen(false)}>
+              <input></input><button>Search People</button><br />
+            </Modal>
+          )}
+      </ModalProvider>
     </StyledList>
   )
 }
