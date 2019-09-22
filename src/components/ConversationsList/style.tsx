@@ -8,9 +8,16 @@ export const StyledList = styled.div`
 `
 
 export const StyledListItem = styled.h1`
-  margin: 5%;
+  margin: 5% 15% 5% 15%;
+  padding: 10px;
+  border-radius: 25px;
   color: white;
   text-align: center;
+  &:hover {
+    cursor: pointer;
+    background-color: white;
+    color: rgb(44, 10, 122);
+  }
 `
 
 export const StyledButton = styled.button`
@@ -25,6 +32,7 @@ export const StyledButton = styled.button`
   align-content: center;
   transition: .4s;
   &:hover {
+    cursor: pointer;
     background: white;
     color: rgb(44, 10, 122);
   }
