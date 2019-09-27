@@ -28,8 +28,11 @@ const MessageBox: React.FC<Props> = (props) => {
   
   React.useEffect(() => {
     if (props.conversationId) {
+      let params = {
+        conversation_password: 'password'
+      }
       axios
-        .get(`/api/conversations/${props.conversationId}/messages/`)
+        .get(`/api/conversations/${props.conversationId}/messages/`, {params})
         .then(response => {
                             setMessages(response.data)
                             scrollToBottom()});
@@ -54,7 +57,8 @@ const MessageBox: React.FC<Props> = (props) => {
     let cable = Cable.createConsumer(`ws://localhost:3000/api/cable?token=${localStorage.getItem("jwt")}`);
     setChats(cable.subscriptions.create({
       channel: 'MessageChannel',
-      conversationId: props.conversationId
+      conversationId: props.conversationId,
+      conversation_password: 'password'
       //@ts-ignore
     }, {
       connected: () => {},
