@@ -5,10 +5,10 @@ import LoginForm from 'components/LoginForm'
 //   name: string;
 // }
 
-const LoginView: React.FC = () => {
+const LoginView: React.FC = (props: any) => {
   return (
     <div>
-      <LoginForm />  
+      <LoginForm router={props.history}/>  
     </div>
   )
 }

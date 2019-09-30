@@ -3,10 +3,18 @@ import axios from 'axios'
 import { Wrapper } from 'components/Globals'
 import { StyledForm, StyledButton, StyledInput } from './style'
 
-const LoginForm:React.FC = () => {
+interface Props {
+  router: Router
+}
+
+interface Router {
+  push: Function
+}
+
+const LoginForm:React.FC<Props> = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState('')
   // @ts-ignore
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -21,15 +29,16 @@ const LoginForm:React.FC = () => {
           "Bearer " + response.data.jwt;
         localStorage.setItem("jwt", response.data.jwt);
         localStorage.setItem("user_id", response.data.user_id);
+        props.router.push('/conversations')
       })
       .catch(error => {
         // @ts-ignore
-        setErrors(["Invalid email or password."]);
+        setErrors("Invalid email or password.");
         setEmail('');
         setPassword('');
       });
-
   }
+  
   return (
     <Wrapper>
       <StyledForm onSubmit={handleSubmit}>
