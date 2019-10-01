@@ -35,7 +35,10 @@ const MessageBox: React.FC<Props> = (props) => {
         .get(`/api/conversations/${props.conversationId}/messages/`, {params})
         .then(response => {
                             setMessages(response.data)
-                            scrollToBottom()});
+                            scrollToBottom()})
+        .catch(error => {
+          console.log(error)
+        });
       let cable = createSocket()
       return () => cable.disconnect();
   }}, [props.conversationId]);
