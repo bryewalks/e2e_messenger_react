@@ -5,6 +5,8 @@ export const StyledList = styled.div`
   min-height: 100%;
   background-color: rgb(44, 10, 122);
   align-content: center;
+  display: flex;
+  flex-direction: column;
 `
 
 export const StyledListItem = styled.h1<{highlighted: boolean}>`
@@ -39,5 +41,19 @@ export const StyledButton = styled.button`
     cursor: pointer;
     background: white;
     color: rgb(44, 10, 122);
+  }
+`
+
+export const StyledLogoutButton = styled.h1`
+  padding: 10px;
+  color: white;
+  text-align: center;
+  margin: 5% 15% 5% 15%;
+  border-radius: 25px;
+  margin-top: auto;
+  &:hover {
+    cursor: pointer;
+    background-color: #FF4242;
+    color: white;
   }
 `

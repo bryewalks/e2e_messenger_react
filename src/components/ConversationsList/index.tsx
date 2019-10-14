@@ -1,11 +1,16 @@
 import * as React from 'react'
 import axios from 'axios'
 import { Modal, ModalProvider} from '../Modal'
-import { StyledList, StyledListItem, StyledButton } from './style'
+import { StyledList, StyledListItem, StyledButton, StyledLogoutButton } from './style'
 import { Plus } from 'styled-icons/fa-solid/Plus'
 
 interface Props {
   conversationCallBack: (userId: number) => void
+  router: Router
+}
+
+interface Router {
+  push: Function
 }
 
 interface ConversationUser {
@@ -59,6 +64,11 @@ const ConversationsList: React.FC<Props> = (props) => {
       .then(response => setConversations([...conversations, response.data]))
   }
 
+  const redirectToLogout = () => {
+    props.router.push('/logout')
+  }
+
+
   return (
     <StyledList>
         {conversations.map((conversation: Conversation, index: number) => {
@@ -89,6 +99,7 @@ const ConversationsList: React.FC<Props> = (props) => {
             </Modal>
           )}
       </ModalProvider>
+      <StyledLogoutButton onClick={() => redirectToLogout()}>Sign Out</StyledLogoutButton>
     </StyledList>
   )
 }

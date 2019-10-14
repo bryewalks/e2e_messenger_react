@@ -1,10 +1,9 @@
 import * as React from 'react'
-import axios from 'axios'
 import { Container } from 'components/Globals'
 import ConversationsList from 'components/ConversationsList'
 import MessageBox from 'components/MessageBox'
 
-const ConversationsIndex: React.FC = () => {
+const ConversationsIndex: React.FC = (props: any) => {
   const [conversationId, setConversationId] = React.useState(0);
 
   function conversationIdCallBack(userId: number): void {
@@ -13,7 +12,7 @@ const ConversationsIndex: React.FC = () => {
 
   return (
     <Container>
-      <ConversationsList conversationCallBack={conversationIdCallBack}/>
+      <ConversationsList router={props.history} conversationCallBack={conversationIdCallBack}/>
       <MessageBox conversationId={conversationId}/>
     </Container>
   )
