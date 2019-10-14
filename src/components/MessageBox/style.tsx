@@ -30,6 +30,9 @@ export const StyledButton = styled.button`
   min-height: 30px;
   margin-top: auto;
   margin-bottom: auto;
+  ${props => props.disabled && `
+    background-color: gray;
+  `}
 `
 
 export const StyledTextArea = styled.textarea`
