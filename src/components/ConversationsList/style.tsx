@@ -7,12 +7,16 @@ export const StyledList = styled.div`
   align-content: center;
 `
 
-export const StyledListItem = styled.h1`
+export const StyledListItem = styled.h1<{highlighted: boolean}>`
   margin: 5% 15% 5% 15%;
   padding: 10px;
   border-radius: 25px;
   color: white;
   text-align: center;
+  ${props => props.highlighted && `
+    background: white;
+    color: rgb(44, 10, 122);
+  `}
   &:hover {
     cursor: pointer;
     background-color: white;

@@ -15,8 +15,7 @@ const LoginForm:React.FC<Props> = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
-  // @ts-ignore
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault()
     let params = {
       email: email,

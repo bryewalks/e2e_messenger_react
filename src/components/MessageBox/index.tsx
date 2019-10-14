@@ -23,24 +23,19 @@ interface MessageProps {
 const MessageBox: React.FC<Props> = (props) => {
   const [messages, setMessages] = React.useState([] as any[]);
   const [messageBody, setMessageBody] = React.useState('');
+  const [messagePassword, setMessagePassword] = React.useState('');
+  const [unlocked, setUnlocked] = React.useState(false);
   const [chats, setChats] = React.useState({} as any);
   const currentUser = localStorage.getItem('user_id')
   
   React.useEffect(() => {
     if (props.conversationId) {
-      let params = {
-        conversation_password: 'password'
-      }
-      axios
-        .get(`/api/conversations/${props.conversationId}/messages/`, {params})
-        .then(response => {
-                            setMessages(response.data)
-                            scrollToBottom()})
-        .catch(error => {
-          console.log(error)
-        });
       let cable = createSocket()
-      return () => cable.disconnect();
+      return () => {cable.disconnect();
+                    setUnlocked(false);
+                    setMessages([]);
+                    setMessageBody('');
+      }
   }}, [props.conversationId]);
   
 
@@ -54,6 +49,33 @@ const MessageBox: React.FC<Props> = (props) => {
   const submitMessage = (event: any) => {
     event.preventDefault()
     chats.create(messageBody)
+  }
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault()
+    let params = {
+      conversation_password: messagePassword
+    }
+    axios
+      .get(`/api/conversations/${props.conversationId}/messages/`, {params})
+      .then(response => {
+                          setMessages(response.data)
+                          scrollToBottom()
+                          setUnlocked(true)
+                        })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
+  let passwordInput;
+
+  if (props.conversationId && !unlocked) {
+    passwordInput = <form onSubmit={handleSubmit}>
+                      <input type='password'
+                            onChange={e => {setMessagePassword(e.target.value)}}/>
+                      <button>submit</button>
+                    </form>
   }
 
   function createSocket() {
@@ -83,6 +105,7 @@ const MessageBox: React.FC<Props> = (props) => {
   return (
     <Container>
       <StyledMessageBox id="message-box">
+        {passwordInput}
         <MessageDiv>
           {messages.map((message: MessageProps, index) => {
             return <StyledMessage key={index} currentUser={message.user_id == currentUser}>{message.body}</StyledMessage>})}
@@ -90,9 +113,10 @@ const MessageBox: React.FC<Props> = (props) => {
       </StyledMessageBox>
       <StyledMessageForm onSubmit={submitMessage}>
         <StyledTextArea
+          disabled={!unlocked}
           value={messageBody}
           onChange={e => { setMessageBody(e.target.value)}}/>
-        <StyledButton>Submit</StyledButton>
+        <StyledButton disabled={!unlocked}>Submit</StyledButton>
       </StyledMessageForm>
     </Container>
   )

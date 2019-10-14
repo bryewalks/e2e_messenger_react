@@ -30,6 +30,7 @@ const ConversationsList: React.FC<Props> = (props) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [userSearch, setUserSearch] = React.useState('');
   const [users, setUsers] = React.useState([]);
+  const [highlightedId, setHighlightedId] = React.useState(0);
   const [conversations, setConversations] = React.useState([] as any);
 
   React.useEffect(() => {
@@ -60,8 +61,13 @@ const ConversationsList: React.FC<Props> = (props) => {
 
   return (
     <StyledList>
-        {conversations.map((conversation: Conversation, index: any) => {
-          return <StyledListItem onClick={() => props.conversationCallBack(conversation.id)} key={index}> {conversation.receiver.name}</StyledListItem>})}
+        {conversations.map((conversation: Conversation, index: number) => {
+          return <StyledListItem key={index}
+                                 highlighted={highlightedId == conversation.id}
+                                 onClick={() => {
+                                                  props.conversationCallBack(conversation.id); setHighlightedId(conversation.id)}}>
+                                                              {conversation.receiver.name}
+                  </StyledListItem>})}
       <ModalProvider>
         <StyledButton onClick={() => setIsModalOpen(true)}><Plus /></StyledButton>
           {isModalOpen && (
