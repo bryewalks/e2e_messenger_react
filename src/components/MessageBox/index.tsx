@@ -5,6 +5,9 @@ import {StyledMessage,
         StyledMessageForm,
         StyledButton,
         StyledTextArea,
+        StyledDecryptForm,
+        StyledDecryptButton,
+        StyledDecryptInput,
         MessageDiv,
         Container} from './style'
 import * as Cable from 'actioncable'
@@ -71,11 +74,11 @@ const MessageBox: React.FC<Props> = (props) => {
   let passwordInput;
 
   if (props.conversationId && !unlocked) {
-    passwordInput = <form onSubmit={handleSubmit}>
-                      <input type='password'
+    passwordInput = <StyledDecryptForm onSubmit={handleSubmit}>
+                      <StyledDecryptInput type='password'
                             onChange={e => {setMessagePassword(e.target.value)}}/>
-                      <button>submit</button>
-                    </form>
+                      <StyledDecryptButton>Decrypt</StyledDecryptButton>
+                    </StyledDecryptForm>
   }
 
   function createSocket() {

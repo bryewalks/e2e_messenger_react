@@ -7,6 +7,7 @@ export const StyledMessageBox = styled.div`
   flex: 1;
   overflow: scroll;
   align-content: center;
+  text-align: center;
 `
 
 export const StyledMessageForm = styled.form`
@@ -67,7 +68,32 @@ export const StyledMessage = styled.div<{currentUser: boolean}>`
     margin-left: 20%;
   `}
 `
+export const StyledDecryptForm = styled.form`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  `
 
+export const StyledDecryptButton = styled.button`
+  background-color: rgb(44, 10, 122);
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 10px;
+  width: 21%;
+  padding: 5px;
+`
+
+export const StyledDecryptInput = styled.input`
+  width: 20%;
+  font-size: 24px;
+  font-weight: bold;
+`
 
 export const Container = styled.div`
   width: 100%;
