@@ -1,7 +1,7 @@
 import * as React from 'react'
 import axios from 'axios'
 import { Modal, ModalProvider} from '../Modal'
-import { StyledList, StyledListItem, StyledButton, StyledLogoutButton } from './style'
+import { StyledList, StyledListItem, StyledButton, StyledLogoutButton, ScrollableDiv, CircleContainer } from './style'
 import { Plus } from 'styled-icons/fa-solid/Plus'
 
 interface Props {
@@ -71,15 +71,19 @@ const ConversationsList: React.FC<Props> = (props) => {
 
   return (
     <StyledList>
+      <ScrollableDiv>
         {conversations.map((conversation: Conversation, index: number) => {
           return <StyledListItem key={index}
-                                 highlighted={highlightedId == conversation.id}
+                                 highlighted={highlightedId === conversation.id}
                                  onClick={() => {
                                                   props.conversationCallBack(conversation.id); setHighlightedId(conversation.id)}}>
                                                               {conversation.receiver.name}
                   </StyledListItem>})}
+      </ScrollableDiv>
       <ModalProvider>
+        <CircleContainer>
         <StyledButton onClick={() => setIsModalOpen(true)}><Plus /></StyledButton>
+        </CircleContainer>
           {isModalOpen && (
             <Modal onClose={() => {setIsModalOpen(false)
                                    setUserSearch('')

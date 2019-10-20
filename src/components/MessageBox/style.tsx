@@ -44,8 +44,11 @@ export const StyledTextArea = styled.textarea`
   border-width: 3px;
   border-color: rgb(182, 181, 186);
   margin-right: 3%;
-  padding: 25px;
   font-size: 24px;
+  @media (max-width: 600px) {
+    width: 80px;
+    font-size: 16px;
+  }
 `
 
 export const StyledMessage = styled.div<{currentUser: boolean}>`
@@ -82,7 +85,7 @@ export const StyledDecryptButton = styled.button`
   color: white;
   text-align: center;
   text-decoration: none;
-  font-size: 24px;
+  font-size: 2vw;
   font-weight: bold;
   border-radius: 10px;
   width: 21%;
@@ -106,4 +109,9 @@ export const MessageDiv = styled.div`
   margin: auto;
   display: flex;
   flex-flow: column nowrap;
+`
+
+export const StyledWarning = styled.p`
+  background-color: #FF424288;
+  font-size: 24px;
 `

@@ -14,7 +14,7 @@ interface Router {
 const LoginForm:React.FC<Props> = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState('')
+  const [error, setError] = useState('')
   const handleSubmit = (event: any) => {
     event.preventDefault()
     let params = {
@@ -30,12 +30,15 @@ const LoginForm:React.FC<Props> = (props) => {
         localStorage.setItem("user_id", response.data.user_id);
         props.router.push('/conversations')
       })
-      .catch(error => {
-        // @ts-ignore
-        setErrors("Invalid email or password.");
-        setEmail('');
+      .catch(() => {
+        setError('Invalid username or password.');
         setPassword('');
       });
+  }
+
+  let logError
+  if (error) {
+    logError = <p>*{error}</p>
   }
   
   return (
@@ -50,6 +53,7 @@ const LoginForm:React.FC<Props> = (props) => {
               onChange={e => {setPassword(e.target.value)}} />
         <br />
         <StyledButton>Login</StyledButton>
+        {logError}
       </StyledForm>
     </Wrapper>
   )

@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 export const StyledList = styled.div`
-  min-width: 20%;
-  min-height: 100%;
+  min-width: 25%;
   background-color: rgb(44, 10, 122);
   align-content: center;
   display: flex;
@@ -15,6 +14,8 @@ export const StyledListItem = styled.h1<{highlighted: boolean}>`
   border-radius: 25px;
   color: white;
   text-align: center;
+  font-size: 2.8vw;
+  transition: .4s;
   ${props => props.highlighted && `
     background: white;
     color: rgb(44, 10, 122);
@@ -27,16 +28,19 @@ export const StyledListItem = styled.h1<{highlighted: boolean}>`
 `
 
 export const StyledButton = styled.button`
-  text-decoration: none;
-  color: white;
-  background-color: rgb(44, 10, 122);
-  width: 50px;
-  height: 50px;
-  margin-top: 5%;
+  display: inline-block;
+  height: 4.5vw;
+  width: 4.5vw;
+  line-height: 0;
   border-radius: 50%;
-  border: solid 5px white;
-  align-content: center;
+  border: 3px solid white;
+  background-color: rgb(44, 10, 122);
+  color: #f2f2f2;
+  font-size: 1vw;
+  min-width: 30px;
+  min-height: 30px;
   transition: .4s;
+  margin-bottom: 5%;
   &:hover {
     cursor: pointer;
     background: white;
@@ -51,9 +55,22 @@ export const StyledLogoutButton = styled.h1`
   margin: 5% 15% 5% 15%;
   border-radius: 25px;
   margin-top: auto;
+  font-size: 3vw;
+  transition: .4s;
   &:hover {
     cursor: pointer;
     background-color: #FF4242;
     color: white;
   }
+`
+
+export const ScrollableDiv = styled.div`
+  overflow: scroll;
+`
+
+export const CircleContainer = styled.div`
+  width: 32%;
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
 `

@@ -8,7 +8,7 @@ const LogoutView: React.FC = (props: any) => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("user_id");
     props.history.push('/')
-  }, []);
+  }, [props.history]);
 
   return (
     <div>
