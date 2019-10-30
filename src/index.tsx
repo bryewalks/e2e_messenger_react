@@ -12,6 +12,11 @@ const GlobalStyle = createGlobalStyle`
     background-color: rgb(182, 181, 186);
     height: 100%;
   }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
 `
 axios.defaults.baseURL = 
   process.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";

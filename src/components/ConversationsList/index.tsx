@@ -34,9 +34,11 @@ interface User {
 const ConversationsList: React.FC<Props> = (props) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [userSearch, setUserSearch] = React.useState('');
+  const [conversationPassword, setConversationPassword] = React.useState('');
   const [users, setUsers] = React.useState([]);
   const [highlightedId, setHighlightedId] = React.useState(0);
   const [conversations, setConversations] = React.useState([] as any);
+  const [isHidden, setIsHidden] = React.useState(true);
 
   React.useEffect(() => {
     axios
@@ -55,8 +57,11 @@ const ConversationsList: React.FC<Props> = (props) => {
   }
 
   const createConversation = (userId: number) => {
+    console.log(conversationPassword);
     let params = {
-      receiver_id: userId
+      receiver_id: userId,
+      password: conversationPassword,
+      passwordconfirmation: conversationPassword
     }
 
     axios
@@ -96,8 +101,12 @@ const ConversationsList: React.FC<Props> = (props) => {
               </form>
               {users.map((user: User, index: number) => {
                 return (<div key={index}>
-                          <p>{user.name}<button onClick={() => {createConversation(user.id)
-                          }}>+</button></p>
+                          <button onClick={() => {setIsHidden(!isHidden)}}>{user.name}</button><br />
+                          <div hidden={isHidden}>
+                            <input onChange={e => {setConversationPassword(e.target.value)}}/>
+                            <button onClick={() => {createConversation(user.id)}}>+</button>
+                          </div>
+                          
                         </div>)
               })}
             </Modal>
@@ -107,5 +116,4 @@ const ConversationsList: React.FC<Props> = (props) => {
     </StyledList>
   )
 }
-
 export default ConversationsList
