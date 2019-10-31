@@ -56,12 +56,12 @@ const ConversationsList: React.FC<Props> = (props) => {
       .then(response => setUsers(response.data));
   }
 
-  const createConversation = (userId: number) => {
-    console.log(conversationPassword);
+  const submitConversation = (userId: number) => (event: any) => {
+    event.preventDefault()
     let params = {
       receiver_id: userId,
       password: conversationPassword,
-      passwordconfirmation: conversationPassword
+      password_confirmation: conversationPassword
     }
 
     axios
@@ -103,10 +103,11 @@ const ConversationsList: React.FC<Props> = (props) => {
                 return (<div key={index}>
                           <button onClick={() => {setIsHidden(!isHidden)}}>{user.name}</button><br />
                           <div hidden={isHidden}>
-                            <input onChange={e => {setConversationPassword(e.target.value)}}/>
-                            <button onClick={() => {createConversation(user.id)}}>+</button>
-                          </div>
-                          
+                            <form onSubmit={submitConversation(user.id)}>
+                              <input onChange={e => {setConversationPassword(e.target.value)}}/>
+                              <button>submit</button>
+                            </form>
+                          </div>  
                         </div>)
               })}
             </Modal>
