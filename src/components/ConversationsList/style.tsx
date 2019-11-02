@@ -33,8 +33,8 @@ export const StyledButton = styled.button`
   width: 4.5vw;
   line-height: 0;
   border-radius: 50%;
-  border: 3px solid white;
   background-color: rgb(44, 10, 122);
+  border: none;
   color: #f2f2f2;
   font-size: 1vw;
   min-width: 30px;
@@ -73,4 +73,20 @@ export const CircleContainer = styled.div`
   text-align: center;
   display: inline-block;
   vertical-align: top;
+`
+
+export const StyledName = styled.h1`
+  color: white;
+  background-color: rgb(44, 10, 122);
+  border-radius: 25px;
+  display: inline-block;
+  width: 30%;
+  padding-bottom: 8px;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const UserSearchForm = styled.div`
+  align-content: center;
 `

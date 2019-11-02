@@ -27,3 +27,15 @@ export const Dialog = styled.div`
   transform: translate(-50%, -50%);
   z-index: 1;
 `;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgb(44, 10, 122);
+  color: white;
+  border: none;
+  &:hover {
+    background-color: #FF4242;
+  }
+`

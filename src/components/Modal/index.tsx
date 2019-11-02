@@ -1,6 +1,6 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom';
-import { Container, Overlay, Dialog } from './style'
+import { Container, Overlay, Dialog, CloseButton } from './style'
 
 const Context = React.createContext(null);
 
@@ -30,7 +30,7 @@ export function Modal({ onClose, children, ...props }: any) {
         <Overlay>
           <Dialog {...props}>
             {children}
-            <button onClick={onClose}>Close</button>
+            <CloseButton onClick={onClose}>&times;</CloseButton>
           </Dialog>
         </Overlay>,
         modalNode
