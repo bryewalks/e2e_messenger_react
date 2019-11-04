@@ -31,7 +31,7 @@ const UserSearchForm: React.FC<Props> = (props) => {
       <div hidden={isHidden}>
         <form onSubmit={submitConversation(props.userId)}>
           <input onChange={e => {setConversationPassword(e.target.value)}}/>
-          <button>submit</button>
+          <button disabled={conversationPassword.length < 8}>submit</button>
         </form>
       </div>  
     </StyledSearchForm>

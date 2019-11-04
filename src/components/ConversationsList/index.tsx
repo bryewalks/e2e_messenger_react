@@ -40,7 +40,7 @@ interface User {
 const ConversationsList: React.FC<Props> = (props) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [userSearch, setUserSearch] = React.useState('');
-  const [users, setUsers] = React.useState([]);
+  const [searchedUser, setSearchedUser] = React.useState({} as any);
   const [highlightedId, setHighlightedId] = React.useState(0);
   const [conversations, setConversations] = React.useState([] as any);
 
@@ -57,8 +57,8 @@ const ConversationsList: React.FC<Props> = (props) => {
     }
     axios
       .get('/api/users/search', {params})
-      .then(response => setUsers(response.data))
-      .catch(error => {setUsers([])});
+      .then(response => setSearchedUser(response.data))
+      .catch(error => {setSearchedUser({})});
   }
 
 
@@ -66,18 +66,23 @@ const ConversationsList: React.FC<Props> = (props) => {
     props.router.push('/logout')
   }
 
-  const conversationsCallback = (newConversation: String) => {
-    setConversations([...conversations, newConversation])
+  const clearSearch = () => {
+    setIsModalOpen(false);
+    setUserSearch('')
+    setSearchedUser({})
   }
 
-  let searchedUsers;
-  if (users) {
-    searchedUsers = users.map((user: User, index: number) => {
-      return (<UserSearchForm key={index} 
-                              userName={user.name} 
-                              userId={user.id} 
-                              conversationsCallback={conversationsCallback} />)
-    })
+  const conversationsCallback = (newConversation: String) => {
+    setConversations([...conversations, newConversation]);
+    clearSearch()
+  }
+
+  let foundUser;
+  if (searchedUser.name) {
+    foundUser = <UserSearchForm 
+                      userName={searchedUser.name} 
+                      userId={searchedUser.id} 
+                      conversationsCallback={conversationsCallback} />
   }
 
 
@@ -98,16 +103,14 @@ const ConversationsList: React.FC<Props> = (props) => {
           <StyledButton onClick={() => setIsModalOpen(true)}><Plus /></StyledButton>
         </CircleContainer>
           {isModalOpen && (
-            <Modal onClose={() => {setIsModalOpen(false)
-                                   setUserSearch('')
-                                   setUsers([])}}>
+            <Modal onClose={clearSearch}>
               <form onSubmit={handleSearch}>
                 <input placeholder='Search Users'
                       type='search'
                       onChange={e => {setUserSearch(e.target.value)}} />
-                <button>Search</button><br />
+                <button disabled={userSearch.length === 0}>Search</button><br />
               </form>
-              {searchedUsers}
+              {foundUser}
             </Modal>
           )}
       </ModalProvider>
