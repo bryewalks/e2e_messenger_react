@@ -108,7 +108,7 @@ const ConversationsList: React.FC<Props> = (props) => {
                 <input placeholder='Search Users'
                       type='search'
                       onChange={e => {setUserSearch(e.target.value)}} />
-                <button disabled={userSearch.length === 0}>Search</button><br />
+                <button disabled={userSearch.length === 0}>Search</button>
               </form>
               {foundUser}
             </Modal>
