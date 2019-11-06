@@ -5,9 +5,12 @@ export const StyledMessageBox = styled.div`
   display: flex;
   flex-flow: column nowrap;
   flex: 1;
-  overflow: scroll;
+  overflow: auto;
   align-content: center;
   text-align: center;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `
 
 export const StyledMessageForm = styled.form`
