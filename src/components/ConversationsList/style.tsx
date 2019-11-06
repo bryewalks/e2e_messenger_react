@@ -65,7 +65,20 @@ export const StyledLogoutButton = styled.h1`
 `
 
 export const ScrollableDiv = styled.div`
-  overflow: scroll;
+  overflow: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 15px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: rgba(54, 77, 145,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    box-shadow: 0 0 1px rgba(255,255,255,.5);
+  }
 `
 
 export const CircleContainer = styled.div`
