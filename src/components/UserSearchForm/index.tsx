@@ -25,13 +25,27 @@ const UserSearchForm: React.FC<Props> = (props) => {
       .then(response => props.conversationsCallback(response.data))
   }
 
+  const generatePassword = () => {
+    var pass = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+    var passLength = (Math.random() * 15) + 5;
+    
+    for (var i = 0; i < passLength; i++)
+      pass += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+    return pass;
+  }
+
   return (
     <StyledSearchForm>
       <StyledName onChange={() => {setIsHidden(false)}} onClick={() => {setIsHidden(!isHidden)}}>{props.userName}</StyledName><br />
       <div hidden={isHidden}>
         <form onSubmit={submitConversation(props.userId)}>
-          <input onChange={e => {setConversationPassword(e.target.value)}}/>
+          <input onChange={e => {setConversationPassword(e.target.value)}} value={conversationPassword}/>
           <button disabled={conversationPassword.length < 8}>submit</button>
+          <br />
+          <button type="button" onClick={() => setConversationPassword(generatePassword)}>Generate Password</button>
         </form>
       </div>  
     </StyledSearchForm>
