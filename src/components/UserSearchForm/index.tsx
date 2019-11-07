@@ -3,14 +3,14 @@ import axios from 'axios'
 import {StyledSearchForm, StyledName} from './style'
 
 interface Props {
-  userName: string,
-  userId: number,
   conversationsCallback: Function
 }
 
 const UserSearchForm: React.FC<Props> = (props) => {
   const [isHidden, setIsHidden] = React.useState(true);
   const [conversationPassword, setConversationPassword] = React.useState('');
+  const [userSearch, setUserSearch] = React.useState('');
+  const [searchedUser, setSearchedUser] = React.useState({} as any);
 
   const submitConversation = (userId: number) => (event: any) => {
     event.preventDefault()
@@ -25,30 +25,49 @@ const UserSearchForm: React.FC<Props> = (props) => {
       .then(response => props.conversationsCallback(response.data))
   }
 
+  const handleSearch = (event: any) => {
+    event.preventDefault();
+    let params = {
+      search: userSearch
+    }
+    axios
+      .get('/api/users/search', {params})
+      .then(response => setSearchedUser(response.data))
+      .catch(error => {setSearchedUser({})});
+  }
+
   const generatePassword = () => {
-    var pass = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let pass = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   
-    var passLength = (Math.random() * 15) + 5;
+    let passwordLength = 12;
     
-    for (var i = 0; i < passLength; i++)
+    for (let i = 0; i < passwordLength; i++)
       pass += possible.charAt(Math.floor(Math.random() * possible.length));
   
     return pass;
   }
 
   return (
-    <StyledSearchForm>
-      <StyledName onChange={() => {setIsHidden(false)}} onClick={() => {setIsHidden(!isHidden)}}>{props.userName}</StyledName><br />
-      <div hidden={isHidden}>
-        <form onSubmit={submitConversation(props.userId)}>
-          <input onChange={e => {setConversationPassword(e.target.value)}} value={conversationPassword}/>
-          <button disabled={conversationPassword.length < 8}>submit</button>
-          <br />
-          <button type="button" onClick={() => setConversationPassword(generatePassword)}>Generate Password</button>
-        </form>
-      </div>  
-    </StyledSearchForm>
+    <div>
+      <form onSubmit={handleSearch}>
+        <input placeholder='Search Users'
+               type='search'
+               onChange={e => {setUserSearch(e.target.value)}} />
+        <button disabled={userSearch.length === 0}>Search</button>
+      </form>
+      <StyledSearchForm>
+        {searchedUser.name && (<StyledName onChange={() => {setIsHidden(false)}} onClick={() => {setIsHidden(!isHidden)}}>{searchedUser.name}</StyledName>)}
+        <div hidden={isHidden}>
+          <form onSubmit={submitConversation(searchedUser.id)}>
+            <input onChange={e => {setConversationPassword(e.target.value)}} value={conversationPassword}/>
+            <button disabled={conversationPassword.length < 8}>submit</button>
+            <br />
+            <button type="button" onClick={() => setConversationPassword(generatePassword)}>Generate Password</button>
+          </form>
+        </div>  
+      </StyledSearchForm>
+    </div>
   )
 }
 export default UserSearchForm
