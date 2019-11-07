@@ -32,15 +32,9 @@ interface Conversation {
   receiver: ConversationUser,
 }
 
-interface User {
-  id: number,
-  name: string
-}
 
 const ConversationsList: React.FC<Props> = (props) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [userSearch, setUserSearch] = React.useState('');
-  const [searchedUser, setSearchedUser] = React.useState({} as any);
   const [highlightedId, setHighlightedId] = React.useState(0);
   const [conversations, setConversations] = React.useState([] as any);
 
@@ -50,41 +44,14 @@ const ConversationsList: React.FC<Props> = (props) => {
       .then(response => setConversations(response.data));
   }, []);
 
-  const handleSearch = (event: any) => {
-    event.preventDefault();
-    let params = {
-      search: userSearch
-    }
-    axios
-      .get('/api/users/search', {params})
-      .then(response => setSearchedUser(response.data))
-      .catch(error => {setSearchedUser({})});
-  }
-
-
   const redirectToLogout = () => {
     props.router.push('/logout')
   }
 
-  const clearSearch = () => {
-    setIsModalOpen(false);
-    setUserSearch('')
-    setSearchedUser({})
-  }
-
   const conversationsCallback = (newConversation: String) => {
     setConversations([...conversations, newConversation]);
-    clearSearch()
+    setIsModalOpen(false);
   }
-
-  let foundUser;
-  if (searchedUser.name) {
-    foundUser = <UserSearchForm 
-                      userName={searchedUser.name} 
-                      userId={searchedUser.id} 
-                      conversationsCallback={conversationsCallback} />
-  }
-
 
 
   return (
@@ -94,8 +61,9 @@ const ConversationsList: React.FC<Props> = (props) => {
           return <StyledListItem key={index}
                                  highlighted={highlightedId === conversation.id}
                                  onClick={() => {
-                                                  props.conversationCallBack(conversation.id); setHighlightedId(conversation.id)}}>
-                                                              {conversation.receiver.name}
+                                                  props.conversationCallBack(conversation.id)
+                                                  setHighlightedId(conversation.id)}}>
+                    {conversation.receiver.name}
                   </StyledListItem>})}
       </ScrollableDiv>
       <ModalProvider>
@@ -103,14 +71,8 @@ const ConversationsList: React.FC<Props> = (props) => {
           <StyledButton onClick={() => setIsModalOpen(true)}><Plus /></StyledButton>
         </CircleContainer>
           {isModalOpen && (
-            <Modal onClose={clearSearch}>
-              <form onSubmit={handleSearch}>
-                <input placeholder='Search Users'
-                      type='search'
-                      onChange={e => {setUserSearch(e.target.value)}} />
-                <button disabled={userSearch.length === 0}>Search</button>
-              </form>
-              {foundUser}
+            <Modal onClose={() => setIsModalOpen(false)}>
+              <UserSearchForm conversationsCallback={conversationsCallback}></UserSearchForm>
             </Modal>
           )}
       </ModalProvider>
