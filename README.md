@@ -6,12 +6,12 @@ E2E Messenger is chat application that uses zero-access encryption (with plans t
 
 This project was created with Ruby on Rails backend and Typescript/React Frontend. On the backend websocets are used to create real time chat between two users.
 
-![]images/websockets.gif
+![](images/websockets.gif)
 
 When users start a conversation they are asked to create a secure password or they can have one generated for them.
 This password should be shared with the recipient via a secure method.
 
-![]images/create_conversation.gif
+![](images/create_conversation.gif)
 
 
 
