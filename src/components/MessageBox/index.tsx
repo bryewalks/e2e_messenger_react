@@ -11,6 +11,7 @@ import {StyledMessage,
         MessageDiv,
         StyledWarning,
         Container} from './style'
+import { Loader } from 'components/Globals'
 import * as Cable from 'actioncable'
 
 interface Props {
@@ -29,6 +30,7 @@ const MessageBox: React.FC<Props> = (props) => {
   const [messageBody, setMessageBody] = React.useState('');
   const [messagePassword, setMessagePassword] = React.useState('');
   const [locked, setLocked] = React.useState(true);
+  const [decrypting, setDecrypting] = React.useState(false);
   const [chats, setChats] = React.useState({} as any);
   const [error, setError] = React.useState('');
   const currentUser = Number(localStorage.getItem('user_id'))
@@ -59,6 +61,7 @@ const MessageBox: React.FC<Props> = (props) => {
                     setLocked(true);
                     setMessages([]);
                     setMessageBody('');
+                    setMessagePassword('');
                     setError('');
       }
   }}, [props.conversationId]);
@@ -78,20 +81,27 @@ const MessageBox: React.FC<Props> = (props) => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault()
-    setError('')
-    let params = {
-      conversation_password: messagePassword
+    if (!messagePassword) {
+      setError('field cannot be empty')
+    } else {
+      setDecrypting(true)
+      let params = {
+        conversation_password: messagePassword
+      }
+      axios
+        .get(`/api/conversations/${props.conversationId}/messages/`, {params})
+        .then(response => {
+                            setMessages(response.data)
+                            scrollToBottom()
+                            setLocked(false)
+                            setDecrypting(false)
+                            setError('')
+                          })
+        .catch(error => {
+          setError(error.response.data.errors)
+          setDecrypting(false)
+        });
     }
-    axios
-      .get(`/api/conversations/${props.conversationId}/messages/`, {params})
-      .then(response => {
-                          setMessages(response.data)
-                          scrollToBottom()
-                          setLocked(false)
-                        })
-      .catch(error => {
-        setError('Invalid password.')
-      });
   }
 
   let passwordError;
@@ -102,12 +112,15 @@ const MessageBox: React.FC<Props> = (props) => {
   let passwordInput;
   if (props.conversationId && locked) {
     passwordInput = <StyledDecryptForm onSubmit={handleSubmit}>
-                      <StyledDecryptInput type='password'
+                      <StyledDecryptInput key ={props.conversationId}
+                                          type='password'
+                                          hidden={decrypting}
                             onChange={e => {setMessagePassword(e.target.value)}}/>
-                      <StyledDecryptButton>Decrypt</StyledDecryptButton>
-                    </StyledDecryptForm>
-                    
+                      <Loader hidden={!decrypting}/>
+                      <StyledDecryptButton>{decrypting ? 'Decrypting' : 'Decrypt'}</StyledDecryptButton>
+                    </StyledDecryptForm>              
   }
+
 
   return (
     <Container>
