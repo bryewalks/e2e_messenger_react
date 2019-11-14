@@ -30,8 +30,8 @@ const LoginForm:React.FC<Props> = (props) => {
         localStorage.setItem("user_id", response.data.user_id);
         props.router.push('/conversations')
       })
-      .catch(() => {
-        setError('Invalid username or password.');
+      .catch((error) => {
+        setError(error.response.data.errors);
         setPassword('');
       });
   }
