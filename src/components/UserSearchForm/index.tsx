@@ -37,15 +37,15 @@ const UserSearchForm: React.FC<Props> = (props) => {
   }
 
   const generatePassword = () => {
-    let pass = "";
+    let password = "";
     let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   
     let passwordLength = 12;
     
     for (let i = 0; i < passwordLength; i++)
-      pass += possible.charAt(Math.floor(Math.random() * possible.length));
+      password += possible.charAt(Math.floor(Math.random() * possible.length));
   
-    return pass;
+    return password;
   }
 
   return (
@@ -57,7 +57,10 @@ const UserSearchForm: React.FC<Props> = (props) => {
         <button disabled={userSearch.length === 0}>Search</button>
       </form>
       <StyledSearchForm>
-        {searchedUser.name && (<StyledName onChange={() => {setIsHidden(false)}} onClick={() => {setIsHidden(!isHidden)}}>{searchedUser.name}</StyledName>)}
+        {searchedUser.name && (<StyledName onChange={() => {setIsHidden(false)}}
+                                           onClick={() => {setIsHidden(!isHidden)}}>
+                                           {searchedUser.name}
+                               </StyledName>)}
         <div hidden={isHidden}>
           <form onSubmit={submitConversation(searchedUser.id)}>
             <input onChange={e => {setConversationPassword(e.target.value)}} value={conversationPassword}/>
