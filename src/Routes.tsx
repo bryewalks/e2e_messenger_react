@@ -6,6 +6,7 @@ import { Route,
         } from 'react-router-dom'
 import LoginView from 'views/auth/LoginView'
 import LogoutView from 'views/auth/LogoutView'
+import SignupView from 'views/auth/SignupView'
 import ConversationsIndex from 'views/conversations/ConversationsIndex'
 
 export const Routes = () => {
@@ -17,6 +18,7 @@ export const Routes = () => {
             <Route exact path="/" component={LoginView} />
             <Route path="/login" component={LoginView} />
             <Route path="/logout" component={LogoutView} />
+            <Route path="/signup" component={SignupView} />
             <Route exact path="/conversations" component={ConversationsIndex} />
           </Switch>
         </div>
