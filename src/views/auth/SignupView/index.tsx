@@ -1,14 +1,15 @@
 import React from 'react'
 import AuthForm from 'components/AuthForm'
+import { Wrapper } from 'components/Globals'
 
 const SignupView: React.FC = (props: any) => {
 
   return (
-    <div>
+    <Wrapper>
       <AuthForm signup={true}
                 router={props.history}>
       </AuthForm>
-    </div>
+    </Wrapper>
   )
 }
 

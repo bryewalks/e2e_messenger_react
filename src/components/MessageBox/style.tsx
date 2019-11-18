@@ -113,8 +113,3 @@ export const MessageDiv = styled.div`
   display: flex;
   flex-flow: column nowrap;
 `
-
-export const StyledWarning = styled.p`
-  background-color: #FF424288;
-  font-size: 24px;
-`

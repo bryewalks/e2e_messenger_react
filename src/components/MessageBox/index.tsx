@@ -9,9 +9,8 @@ import {StyledMessage,
         StyledDecryptButton,
         StyledDecryptInput,
         MessageDiv,
-        StyledWarning,
         Container} from './style'
-import { Loader } from 'components/Globals'
+import { Loader, StyledWarning } from 'components/Globals'
 import * as Cable from 'actioncable'
 
 interface Props {
@@ -106,7 +105,7 @@ const MessageBox: React.FC<Props> = (props) => {
 
   let passwordError;
   if (error) {
-    passwordError = <StyledWarning>{error}</StyledWarning>
+    passwordError = <StyledWarning size={'24px'} >{error}</StyledWarning>
   }
 
   let passwordInput;

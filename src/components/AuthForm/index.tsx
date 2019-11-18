@@ -3,7 +3,10 @@ import axios from 'axios';
 import { StyledAuthForm,
          StyledHeader,
          StyledInput,
-         StyledButton } from './style';
+         StyledButton,
+         StyledLink,
+         StyledQuestion } from './style';
+import { StyledWarning } from 'components/Globals'
 
 interface Props {
   signup: boolean
@@ -19,7 +22,7 @@ const AuthForm: React.FC<Props> = (props) => {
   const [password, setPassword] = React.useState('');
   const [passwordConfirmation, setPasswordConfirmation] = React.useState('');
   const [name, setName] = React.useState('');
-  const [errors, setErrors] = React.useState('');
+  const [errors, setErrors] = React.useState([]);
 
   const handleSignup = (event: any) => {
     event.preventDefault()
@@ -35,7 +38,6 @@ const AuthForm: React.FC<Props> = (props) => {
         props.router.push('/login')
       })
       .catch((error) => {
-        console.log(error.response.data.errors)
         setErrors(error.response.data.errors);
     });
   }
@@ -61,6 +63,18 @@ const AuthForm: React.FC<Props> = (props) => {
       });
   }
 
+  let linkTo;
+  if (props.signup) {
+    linkTo = <div>
+              <StyledQuestion>Already a member?</StyledQuestion>
+              <StyledLink to="/login">Login</StyledLink>
+             </div>
+  } else {
+    linkTo =  <div>
+                <StyledQuestion>Not a member?</StyledQuestion>
+                <StyledLink to="/signup">Signup</StyledLink>
+              </div>
+  }
 
   return (
     <StyledAuthForm onSubmit={props.signup ? handleSignup : handleLogin}>
@@ -79,6 +93,12 @@ const AuthForm: React.FC<Props> = (props) => {
           <StyledInput placeholder='Name'
                   onChange={e => {setName(e.target.value)}}/>
         </div>
+      )}
+      {linkTo}
+      {errors && (
+        errors.map((error:any, index) => {
+          return <StyledWarning size={'16px'} key={index}>{error}</StyledWarning>
+        })
       )}
       <StyledButton>Submit</StyledButton>
     </StyledAuthForm>

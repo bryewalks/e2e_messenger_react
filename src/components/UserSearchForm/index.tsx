@@ -11,6 +11,7 @@ const UserSearchForm: React.FC<Props> = (props) => {
   const [conversationPassword, setConversationPassword] = React.useState('');
   const [userSearch, setUserSearch] = React.useState('');
   const [searchedUser, setSearchedUser] = React.useState({} as any);
+  const [error, setError] = React.useState('');
 
   const submitConversation = (userId: number) => (event: any) => {
     event.preventDefault()
@@ -32,8 +33,10 @@ const UserSearchForm: React.FC<Props> = (props) => {
     }
     axios
       .get('/api/users/search', {params})
-      .then(response => setSearchedUser(response.data))
-      .catch(error => {setSearchedUser({})});
+      .then(response => { setError('')
+                          setSearchedUser(response.data)})
+      .catch(error => {setSearchedUser({})
+                       setError(error.response.data.error)});
   }
 
   const generatePassword = () => {
@@ -55,6 +58,7 @@ const UserSearchForm: React.FC<Props> = (props) => {
                type='search'
                onChange={e => {setUserSearch(e.target.value)}} />
         <button disabled={userSearch.length === 0}>Search</button>
+        {error && (<p>{error}</p>)}
       </form>
       <StyledSearchForm>
         {searchedUser.name && (<StyledName onChange={() => {setIsHidden(false)}}
