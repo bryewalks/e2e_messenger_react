@@ -1,7 +1,6 @@
 import styled, { keyframes }from 'styled-components'
 
 export const Wrapper = styled.div`
-  margin-top: 2em;
   padding: 1.5em 0;
   margin-right: auto;
   margin-left: auto;
@@ -17,8 +16,6 @@ export const Container = styled.div`
   display: flex;
   height: 100vh;
   min-width: 100%;
-  /* width: 100%;
-  background-color: ${props => (props.color ? props.color : 'white')}; */
 `
 
 const spin = keyframes`
@@ -37,5 +34,11 @@ export const Loader = styled.div`
   width: 2.28571429rem;
   height: 2.28571429rem;
   animation: ${spin} 0.6s linear infinite;
+`
+
+export const StyledWarning = styled.p<{size: string}>`
+  background-color: #FF424288;
+  font-size: ${props => props.size};
+  margin: 0;
 `
 

@@ -1,14 +1,13 @@
 import React from 'react'
 import AuthForm from 'components/AuthForm'
-import { Link } from 'react-router-dom'
+import { Wrapper } from 'components/Globals'
 
 const LoginView: React.FC = (props: any) => {
   return (
-    <div>
+    <Wrapper>
       <AuthForm signup={false}
                 router={props.history}/>
-      <Link to="/signup">Signup</Link>
-    </div>
+    </Wrapper>
   )
 }
 
