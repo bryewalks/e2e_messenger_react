@@ -73,9 +73,18 @@ const MessageBox: React.FC<Props> = (props) => {
     }
   }
 
+  const onEnterPress = (event: any) => {
+    if(event.keyCode === 13 && event.shiftKey === false) {
+      event.preventDefault();
+      submitMessage(event);
+    }
+  }
+
   const submitMessage = (event: any) => {
     event.preventDefault()
-    chats.create(messageBody)
+    if (messageBody) {
+      chats.create(messageBody)
+    }
   }
 
   const handleSubmit = (event: any) => {
@@ -133,6 +142,7 @@ const MessageBox: React.FC<Props> = (props) => {
       </StyledMessageBox>
       <StyledMessageForm onSubmit={submitMessage}>
         <StyledTextArea
+          onKeyDown={onEnterPress}
           disabled={locked}
           value={messageBody}
           onChange={e => { setMessageBody(e.target.value)}}/>
