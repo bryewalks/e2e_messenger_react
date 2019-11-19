@@ -6,8 +6,7 @@ export const StyledName = styled.h1`
   background-color: rgb(44, 10, 122);
   border-radius: 25px;
   display: inline-block;
-  width: 30%;
-  padding-bottom: 8px;
+  padding: .2em 2em;
   &:hover {
     cursor: pointer;
   }
