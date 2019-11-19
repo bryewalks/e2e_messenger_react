@@ -18,19 +18,17 @@ interface Router {
 }
 
 const AuthForm: React.FC<Props> = (props) => {
-  const [email, setEmail] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [passwordConfirmation, setPasswordConfirmation] = React.useState('');
-  const [name, setName] = React.useState('');
   const [errors, setErrors] = React.useState([]);
 
   const handleSignup = (event: any) => {
     event.preventDefault()
     let params = {
-      email: email,
+      name: username,
       password: password,
-      password_confirmation: passwordConfirmation,
-      name: name
+      password_confirmation: passwordConfirmation
     };
     axios
       .post("/api/users", params)
@@ -45,7 +43,7 @@ const AuthForm: React.FC<Props> = (props) => {
   const handleLogin = (event: any) => {
     event.preventDefault()
     let params = {
-      email: email,
+      name: username,
       password: password
     };
     axios
@@ -79,9 +77,8 @@ const AuthForm: React.FC<Props> = (props) => {
   return (
     <StyledAuthForm onSubmit={props.signup ? handleSignup : handleLogin}>
       <StyledHeader>{props.signup ? "Sign Up" : "Login"}</StyledHeader>
-      <StyledInput placeholder='Email'
-              type='email'
-              onChange={e => {setEmail(e.target.value)}}/>
+      <StyledInput placeholder='Username'
+              onChange={e => {setUsername(e.target.value)}}/>
       <StyledInput placeholder='Password'
               type='password'
               onChange={e => {setPassword(e.target.value)}}/>
@@ -90,8 +87,6 @@ const AuthForm: React.FC<Props> = (props) => {
           <StyledInput placeholder='Password Confirmation'
                   type='password'
                   onChange={e => {setPasswordConfirmation(e.target.value)}}/>
-          <StyledInput placeholder='Name'
-                  onChange={e => {setName(e.target.value)}}/>
         </div>
       )}
       {linkTo}
