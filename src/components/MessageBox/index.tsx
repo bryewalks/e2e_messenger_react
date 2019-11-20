@@ -27,6 +27,7 @@ interface MessageProps {
 const MessageBox: React.FC<Props> = (props) => {
   const [messages, setMessages] = React.useState([] as any[]);
   const [messageBody, setMessageBody] = React.useState('');
+  const [conversationPassword, setConversationPassword] = React.useState('');
   const [messagePassword, setMessagePassword] = React.useState('');
   const [locked, setLocked] = React.useState(true);
   const [decrypting, setDecrypting] = React.useState(false);
@@ -35,12 +36,12 @@ const MessageBox: React.FC<Props> = (props) => {
   const currentUser = Number(localStorage.getItem('user_id'))
   
   React.useEffect(() => {
-    if (props.conversationId) {
+    if (props.conversationId && messagePassword) {
       let cable = Cable.createConsumer(`ws://localhost:3000/api/cable?token=${localStorage.getItem("jwt")}`);
       setChats(cable.subscriptions.create({
         channel: 'MessageChannel',
-        conversationId: props.conversationId,
-        conversation_password: 'password'
+        conversation_id: props.conversationId,
+        message_password: messagePassword
         //@ts-ignore
       }, {
         connected: () => {},
@@ -60,10 +61,10 @@ const MessageBox: React.FC<Props> = (props) => {
                     setLocked(true);
                     setMessages([]);
                     setMessageBody('');
-                    setMessagePassword('');
+                    setConversationPassword('');
                     setError('');
       }
-  }}, [props.conversationId]);
+  }}, [props.conversationId, messagePassword]);
   
 
   const scrollToBottom = () => {
@@ -89,12 +90,12 @@ const MessageBox: React.FC<Props> = (props) => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault()
-    if (!messagePassword) {
+    if (!conversationPassword) {
       setError('field cannot be empty')
     } else {
       setDecrypting(true)
       let params = {
-        conversation_password: messagePassword
+        conversation_password: conversationPassword
       }
       axios
         .get(`/api/conversations/${props.conversationId}/messages/`, {params})
@@ -104,6 +105,7 @@ const MessageBox: React.FC<Props> = (props) => {
                             setLocked(false)
                             setDecrypting(false)
                             setError('')
+                            setMessagePassword(conversationPassword)
                           })
         .catch(error => {
           setError(error.response.data.errors)
@@ -123,7 +125,7 @@ const MessageBox: React.FC<Props> = (props) => {
                       <StyledDecryptInput key ={props.conversationId}
                                           type='password'
                                           hidden={decrypting}
-                            onChange={e => {setMessagePassword(e.target.value)}}/>
+                            onChange={e => {setConversationPassword(e.target.value)}}/>
                       <Loader hidden={!decrypting}/>
                       <StyledDecryptButton>{decrypting ? 'Decrypting' : 'Decrypt'}</StyledDecryptButton>
                     </StyledDecryptForm>              
