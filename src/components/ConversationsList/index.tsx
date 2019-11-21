@@ -7,6 +7,7 @@ import { StyledList,
          StyledButton,
          StyledLogoutButton,
          ScrollableDiv,
+         StyledPTag,
          CircleContainer } from './style'
 import { Plus } from 'styled-icons/fa-solid/Plus'
 
@@ -57,6 +58,9 @@ const ConversationsList: React.FC<Props> = (props) => {
   return (
     <StyledList>
       <ScrollableDiv>
+        {conversations.length === 0 && (
+          <StyledPTag>No active conversations...</StyledPTag>
+        )}
         {conversations.map((conversation: Conversation, index: number) => {
           return <StyledListItem key={index}
                                  highlighted={highlightedId === conversation.id}
@@ -76,6 +80,9 @@ const ConversationsList: React.FC<Props> = (props) => {
             </Modal>
           )}
       </ModalProvider>
+      {conversations.length === 0 && (
+        <StyledPTag>Add users to start encrypted chats.</StyledPTag>
+      )}
       <StyledLogoutButton onClick={() => redirectToLogout()}>Sign Out</StyledLogoutButton>
     </StyledList>
   )

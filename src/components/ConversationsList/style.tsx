@@ -103,3 +103,9 @@ export const StyledName = styled.h1`
 export const UserSearchForm = styled.div`
   align-content: center;
 `
+
+export const StyledPTag = styled.p`
+  display: flex;
+  justify-content: center;
+  color: white;
+`
