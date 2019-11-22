@@ -27,8 +27,8 @@ interface MessageProps {
 const MessageBox: React.FC<Props> = (props) => {
   const [messages, setMessages] = React.useState([] as any[]);
   const [messageBody, setMessageBody] = React.useState('');
-  const [conversationPassword, setConversationPassword] = React.useState('');
   const [messagePassword, setMessagePassword] = React.useState('');
+  const [conversationPassword, setConversationPassword] = React.useState('');
   const [locked, setLocked] = React.useState(true);
   const [decrypting, setDecrypting] = React.useState(false);
   const [chats, setChats] = React.useState({} as any);
@@ -58,14 +58,20 @@ const MessageBox: React.FC<Props> = (props) => {
         }
       }));
       return () => {cable.disconnect();
-                    setLocked(true);
-                    setMessages([]);
-                    setMessageBody('');
-                    setConversationPassword('');
-                    setError('');
+                    clearState();
       }
   }}, [props.conversationId, messagePassword]);
   
+  const clearState = () => {
+    setMessages([]);
+    setMessageBody('');
+    setMessagePassword('');
+    setConversationPassword('');
+    setLocked(true);
+    setDecrypting(false);
+    setChats({});
+    setError('');
+  }
 
   const scrollToBottom = () => {
     const messageBody: HTMLElement | null = document.querySelector('#message-box');

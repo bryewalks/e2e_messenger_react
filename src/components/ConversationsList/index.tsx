@@ -30,6 +30,7 @@ interface ConversationUser {
 interface Conversation {
   id: number,
   created_at: string,
+  unread_messages: boolean,
   author: ConversationUser,
   receiver: ConversationUser,
 }
@@ -82,13 +83,18 @@ const ConversationsList: React.FC<Props> = (props) => {
           <StyledPTag>No active conversations...</StyledPTag>
         )}
         {conversations.map((conversation: Conversation, index: number) => {
-          return <StyledListItem key={index}
+          return <div key={index}>
+                   <StyledListItem 
                                  highlighted={highlightedId === conversation.id}
+                                 newMessage={conversation.unread_messages}
                                  onClick={() => {
                                                   props.conversationCallBack(conversation.id)
-                                                  setHighlightedId(conversation.id)}}>
+                                                  setHighlightedId(conversation.id)
+                                                  conversation.unread_messages = false;
+                                                  }}>
                     {conversation.receiver.name}
-                  </StyledListItem>})}
+                   </StyledListItem>
+                 </div>})}
       </ScrollableDiv>
       <ModalProvider>
         <CircleContainer>
