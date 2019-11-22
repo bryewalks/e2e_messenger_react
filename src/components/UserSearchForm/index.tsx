@@ -21,15 +21,13 @@ const UserSearchForm: React.FC<Props> = (props) => {
   const submitConversation = (userId: number) => (event: any) => {
     event.preventDefault()
     let params = {
-      receiverId: userId,
+      receiver_id: userId,
       password: conversationPassword,
-      passwordConfirmation: conversationPassword
+      password_confirmation: conversationPassword
     }
-    props.cable.create(params)
-
-    // axios
-    //   .post('/api/conversations', params)
-    //   .then(response => props.conversationsCallback(response.data))
+    axios
+      .post('/api/conversations', params)
+      .then(response => props.conversationsCallback(response.data))
   }
 
   const handleSearch = (event: any) => {

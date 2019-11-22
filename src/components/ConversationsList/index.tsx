@@ -34,13 +34,6 @@ interface Conversation {
   receiver: ConversationUser,
 }
 
-interface CreateConversation {
-  receiverId: string,
-  password: string,
-  passwordConfirmation: string,
-}
-
-
 const ConversationsList: React.FC<Props> = (props) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [highlightedId, setHighlightedId] = React.useState(0);
@@ -57,32 +50,28 @@ const ConversationsList: React.FC<Props> = (props) => {
     let cable = Cable.createConsumer(`ws://localhost:3000/api/cable?token=${localStorage.getItem("jwt")}`);
     setConversationsCable(cable.subscriptions.create({
       channel: 'ConversationChannel'
-      //@ts-ignore
+      // @ts-ignore
     }, {
       connected: () => {},
       received: (data: any) => {
         let newData = JSON.parse(data)
-        console.log(newData)
         setConversations(conversations => [...conversations, newData]);
-        setIsModalOpen(false);
       },
-      create: function(options: CreateConversation) {
-        this.perform('create', {
-          receiver_id: options.receiverId,
-          password: options.password,
-          password_confirmation: options.passwordConfirmation
+      alert: function(inputId: number) {
+        this.perform('alert', {
+          id: inputId,
         });
       }
     }));
-    // return () => {cable.disconnect()}
   }, []);
 
   const redirectToLogout = () => {
     props.router.push('/logout')
   }
 
-  const conversationsCallback = (newConversation: String) => {
+  const conversationsCallback = (newConversation: Conversation) => {
     setConversations([...conversations, newConversation]);
+    conversationsCable.alert(newConversation.id);
     setIsModalOpen(false);
   }
 
