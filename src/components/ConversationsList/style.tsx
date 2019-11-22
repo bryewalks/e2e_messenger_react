@@ -8,7 +8,7 @@ export const StyledList = styled.div`
   flex-direction: column;
 `
 
-export const StyledListItem = styled.h1<{highlighted: boolean}>`
+export const StyledListItem = styled.h1<{highlighted: boolean, newMessage: boolean}>`
   margin: 5% 15% 5% 15%;
   padding: 10px;
   border-radius: 25px;
@@ -25,6 +25,9 @@ export const StyledListItem = styled.h1<{highlighted: boolean}>`
     background-color: white;
     color: rgb(44, 10, 122);
   }
+  ${props => props.newMessage && `
+    color: rgb(102, 255, 102);
+  `}
 `
 
 export const StyledButton = styled.button`
