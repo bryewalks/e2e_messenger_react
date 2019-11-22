@@ -1,5 +1,6 @@
 import * as React from 'react'
 import axios from 'axios'
+import * as Cable from 'actioncable'
 import { Modal, ModalProvider} from '../Modal'
 import UserSearchForm from '../UserSearchForm'
 import { StyledList,
@@ -33,27 +34,46 @@ interface Conversation {
   receiver: ConversationUser,
 }
 
-
 const ConversationsList: React.FC<Props> = (props) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [highlightedId, setHighlightedId] = React.useState(0);
-  const [conversations, setConversations] = React.useState([] as any);
+  const [conversations, setConversations] = React.useState([] as any[]);
+  const [conversationsCable, setConversationsCable] = React.useState({} as any);
+
+  
 
   React.useEffect(() => {
     axios
       .get('/api/conversations/')
       .then(response => setConversations(response.data));
+
+    let cable = Cable.createConsumer(`ws://localhost:3000/api/cable?token=${localStorage.getItem("jwt")}`);
+    setConversationsCable(cable.subscriptions.create({
+      channel: 'ConversationChannel'
+      // @ts-ignore
+    }, {
+      connected: () => {},
+      received: (data: any) => {
+        let newData = JSON.parse(data)
+        setConversations(conversations => [...conversations, newData]);
+      },
+      alert: function(inputId: number) {
+        this.perform('alert', {
+          id: inputId,
+        });
+      }
+    }));
   }, []);
 
   const redirectToLogout = () => {
     props.router.push('/logout')
   }
 
-  const conversationsCallback = (newConversation: String) => {
+  const conversationsCallback = (newConversation: Conversation) => {
     setConversations([...conversations, newConversation]);
+    conversationsCable.alert(newConversation.id);
     setIsModalOpen(false);
   }
-
 
   return (
     <StyledList>
@@ -76,7 +96,7 @@ const ConversationsList: React.FC<Props> = (props) => {
         </CircleContainer>
           {isModalOpen && (
             <Modal onClose={() => setIsModalOpen(false)}>
-              <UserSearchForm conversationsCallback={conversationsCallback}></UserSearchForm>
+              <UserSearchForm cable={conversationsCable} conversationsCallback={conversationsCallback}></UserSearchForm>
             </Modal>
           )}
       </ModalProvider>

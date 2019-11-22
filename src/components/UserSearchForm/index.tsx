@@ -4,6 +4,11 @@ import {StyledSearchForm, StyledName} from './style'
 
 interface Props {
   conversationsCallback: Function
+  cable: Create
+}
+
+interface Create {
+  create: Function
 }
 
 const UserSearchForm: React.FC<Props> = (props) => {
@@ -20,7 +25,6 @@ const UserSearchForm: React.FC<Props> = (props) => {
       password: conversationPassword,
       password_confirmation: conversationPassword
     }
-
     axios
       .post('/api/conversations', params)
       .then(response => props.conversationsCallback(response.data))
