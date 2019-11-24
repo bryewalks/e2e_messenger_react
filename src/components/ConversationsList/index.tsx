@@ -13,7 +13,7 @@ import { StyledList,
 import { Plus } from 'styled-icons/fa-solid/Plus'
 
 interface Props {
-  conversationCallBack: (userId: number) => void
+  conversationIdCallBack: (userId: number) => void
   router: Router
 }
 
@@ -33,6 +33,12 @@ interface Conversation {
   unread_messages: boolean,
   author: ConversationUser,
   receiver: ConversationUser,
+}
+
+interface NewConversation {
+  receiverId: number,
+  password: string,
+  passwordConfirmation: string
 }
 
 const ConversationsList: React.FC<Props> = (props) => {
@@ -56,11 +62,21 @@ const ConversationsList: React.FC<Props> = (props) => {
       connected: () => {},
       received: (data: any) => {
         let newData = JSON.parse(data)
-        setConversations(conversations => [...conversations, newData]);
+        switch (newData.action) {
+          case 'created':
+            setConversations(conversations => [...conversations, newData]);
+        }
       },
       alert: function(inputId: number) {
         this.perform('alert', {
           id: inputId,
+        });
+      },
+      create: function(newConversation: NewConversation) {
+        this.perform('create', {
+          receiver_id: newConversation.receiverId,
+          password: newConversation.password,
+          password_confirmation: newConversation.passwordConfirmation
         });
       }
     }));
@@ -70,9 +86,14 @@ const ConversationsList: React.FC<Props> = (props) => {
     props.router.push('/logout')
   }
 
-  const conversationsCallback = (newConversation: Conversation) => {
-    setConversations([...conversations, newConversation]);
-    conversationsCable.alert(newConversation.id);
+  // const conversationsCallback = (newConversation: Conversation) => {
+  //   setConversations([...conversations, newConversation]);
+  //   conversationsCable.alert(newConversation.id);
+  //   setIsModalOpen(false);
+  // }
+
+  const conversationCreateCallback = (newConversation: NewConversation) => {
+    conversationsCable.create(newConversation)
     setIsModalOpen(false);
   }
 
@@ -88,7 +109,7 @@ const ConversationsList: React.FC<Props> = (props) => {
                                  highlighted={highlightedId === conversation.id}
                                  newMessage={conversation.unread_messages}
                                  onClick={() => {
-                                                  props.conversationCallBack(conversation.id)
+                                                  props.conversationIdCallBack(conversation.id)
                                                   setHighlightedId(conversation.id)
                                                   conversation.unread_messages = false;
                                                   }}>
@@ -102,7 +123,7 @@ const ConversationsList: React.FC<Props> = (props) => {
         </CircleContainer>
           {isModalOpen && (
             <Modal onClose={() => setIsModalOpen(false)}>
-              <UserSearchForm cable={conversationsCable} conversationsCallback={conversationsCallback}></UserSearchForm>
+              <UserSearchForm cable={conversationsCable} conversationCreateCallback={conversationCreateCallback}></UserSearchForm>
             </Modal>
           )}
       </ModalProvider>
