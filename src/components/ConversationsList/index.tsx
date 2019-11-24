@@ -46,9 +46,8 @@ const ConversationsList: React.FC<Props> = (props) => {
   const [highlightedId, setHighlightedId] = React.useState(0);
   const [conversations, setConversations] = React.useState([] as any[]);
   const [conversationsCable, setConversationsCable] = React.useState({} as any);
-
+  const currentUserId = Number(localStorage.getItem('user_id'))
   
-
   React.useEffect(() => {
     axios
       .get('/api/conversations/')
@@ -61,7 +60,9 @@ const ConversationsList: React.FC<Props> = (props) => {
     }, {
       connected: () => {},
       received: (data: any) => {
+        console.log(data)
         let newData = JSON.parse(data)
+        console.log(newData)
         switch (newData.action) {
           case 'created':
             setConversations(conversations => [...conversations, newData]);
@@ -113,7 +114,7 @@ const ConversationsList: React.FC<Props> = (props) => {
                                                   setHighlightedId(conversation.id)
                                                   conversation.unread_messages = false;
                                                   }}>
-                    {conversation.receiver.name}
+                    {currentUserId === conversation.author.id ? conversation.receiver.name : conversation.author.name }
                    </StyledListItem>
                  </div>})}
       </ScrollableDiv>
