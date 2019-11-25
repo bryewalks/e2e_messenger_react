@@ -3,7 +3,7 @@ import axios from 'axios'
 import {StyledSearchForm, StyledName} from './style'
 
 interface Props {
-  conversationsCallback: Function
+  conversationCreateCallback: Function
   cable: Create
 }
 
@@ -21,13 +21,11 @@ const UserSearchForm: React.FC<Props> = (props) => {
   const submitConversation = (userId: number) => (event: any) => {
     event.preventDefault()
     let params = {
-      receiver_id: userId,
+      receiverId: userId,
       password: conversationPassword,
-      password_confirmation: conversationPassword
+      passwordConfirmation: conversationPassword
     }
-    axios
-      .post('/api/conversations', params)
-      .then(response => props.conversationsCallback(response.data))
+    props.conversationCreateCallback(params)
   }
 
   const handleSearch = (event: any) => {

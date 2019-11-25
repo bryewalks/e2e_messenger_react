@@ -12,7 +12,7 @@ const ConversationsIndex: React.FC = (props: any) => {
 
   return (
     <Container>
-      <ConversationsList router={props.history} conversationCallBack={conversationIdCallBack}/>
+      <ConversationsList router={props.history} conversationIdCallBack={conversationIdCallBack}/>
       <MessageBox conversationId={conversationId}/>
     </Container>
   )
