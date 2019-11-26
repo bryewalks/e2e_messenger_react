@@ -60,9 +60,7 @@ const ConversationsList: React.FC<Props> = (props) => {
     }, {
       connected: () => {},
       received: (data: any) => {
-        console.log(data)
         let newData = JSON.parse(data)
-        console.log(newData)
         switch (newData.action) {
           case 'created':
             setConversations(conversations => [...conversations, newData]);
