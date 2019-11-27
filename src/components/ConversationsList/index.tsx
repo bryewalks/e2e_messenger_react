@@ -32,7 +32,7 @@ interface Conversation {
   created_at: string,
   unread_messages: boolean,
   author: ConversationUser,
-  receiver: ConversationUser,
+  receiver: ConversationUser
 }
 
 interface NewConversation {
@@ -46,6 +46,7 @@ const ConversationsList: React.FC<Props> = (props) => {
   const [highlightedId, setHighlightedId] = React.useState(0);
   const [conversations, setConversations] = React.useState([] as any[]);
   const [conversationsCable, setConversationsCable] = React.useState({} as any);
+  const [alertedConversations, setAlertedConversations] = React.useState([] as any[]);
   const currentUserId = Number(localStorage.getItem('user_id'))
   
   React.useEffect(() => {
@@ -60,10 +61,13 @@ const ConversationsList: React.FC<Props> = (props) => {
     }, {
       connected: () => {},
       received: (data: any) => {
-        let newData = JSON.parse(data)
-        switch (newData.action) {
-          case 'created':
-            setConversations(conversations => [...conversations, newData]);
+        let receivedConversation = JSON.parse(data)
+        switch (receivedConversation.action) {
+          case 'new conversation':
+            setConversations(conversations => [...conversations, receivedConversation]);
+            break;
+          case 'conversation alert':
+            setAlertedConversations(alertedConversations => [...alertedConversations, receivedConversation.id]);
         }
       },
       alert: function(inputId: number) {
@@ -85,14 +89,16 @@ const ConversationsList: React.FC<Props> = (props) => {
     props.router.push('/logout')
   }
 
-  // const conversationsCallback = (newConversation: Conversation) => {
-  //   setConversations([...conversations, newConversation]);
-  //   conversationsCable.alert(newConversation.id);
-  //   setIsModalOpen(false);
-  // }
+  const removeAlertedConversation = (conversationId: number) => {
+    const filteredAlerts = alertedConversations.filter(alertedConversation => alertedConversation !== conversationId)
+    setAlertedConversations(filteredAlerts)
+  }
 
   const conversationCreateCallback = (newConversation: NewConversation) => {
-    conversationsCable.create(newConversation)
+    axios
+      .post('/api/conversations', newConversation)
+      .then(response => {setConversations([...conversations, response.data]);})
+      .catch(error => {});
     setIsModalOpen(false);
   }
 
@@ -106,11 +112,12 @@ const ConversationsList: React.FC<Props> = (props) => {
           return <div key={index}>
                    <StyledListItem 
                                  highlighted={highlightedId === conversation.id}
-                                 newMessage={conversation.unread_messages}
+                                 alert={alertedConversations.includes(conversation.id) || conversation.unread_messages}
                                  onClick={() => {
                                                   props.conversationIdCallBack(conversation.id)
                                                   setHighlightedId(conversation.id)
                                                   conversation.unread_messages = false;
+                                                  removeAlertedConversation(conversation.id)
                                                   }}>
                     {currentUserId === conversation.author.id ? conversation.receiver.name : conversation.author.name }
                    </StyledListItem>
