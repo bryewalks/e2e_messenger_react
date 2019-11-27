@@ -21,9 +21,9 @@ const UserSearchForm: React.FC<Props> = (props) => {
   const submitConversation = (userId: number) => (event: any) => {
     event.preventDefault()
     let params = {
-      receiverId: userId,
+      receiver_id: userId,
       password: conversationPassword,
-      passwordConfirmation: conversationPassword
+      password_confirmation: conversationPassword
     }
     props.conversationCreateCallback(params)
   }
