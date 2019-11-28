@@ -111,4 +111,5 @@ export const StyledPTag = styled.p`
   display: flex;
   justify-content: center;
   color: white;
+  margin: 50px;
 `

@@ -43,6 +43,7 @@ interface NewConversation {
 
 const ConversationsList: React.FC<Props> = (props) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [highlightedId, setHighlightedId] = React.useState(0);
   const [conversations, setConversations] = React.useState([] as any[]);
   const [conversationsCable, setConversationsCable] = React.useState({} as any);
@@ -52,7 +53,10 @@ const ConversationsList: React.FC<Props> = (props) => {
   React.useEffect(() => {
     axios
       .get('/api/conversations/')
-      .then(response => setConversations(response.data));
+      .then(response => {
+                          setConversations(response.data)
+                          setLoading(false)
+                        });
 
     let cable = Cable.createConsumer(`ws://localhost:3000/api/cable?token=${localStorage.getItem("jwt")}`);
     setConversationsCable(cable.subscriptions.create({
@@ -89,6 +93,9 @@ const ConversationsList: React.FC<Props> = (props) => {
     props.router.push('/logout')
   }
 
+  let noActiveConversations = conversations.length === 0 && !loading
+  
+
   const removeAlertedConversation = (conversationId: number) => {
     const filteredAlerts = alertedConversations.filter(alertedConversation => alertedConversation !== conversationId)
     setAlertedConversations(filteredAlerts)
@@ -105,7 +112,7 @@ const ConversationsList: React.FC<Props> = (props) => {
   return (
     <StyledList>
       <ScrollableDiv>
-        {conversations.length === 0 && (
+        {noActiveConversations && (
           <StyledPTag>No active conversations...</StyledPTag>
         )}
         {conversations.map((conversation: Conversation, index: number) => {
@@ -133,7 +140,7 @@ const ConversationsList: React.FC<Props> = (props) => {
             </Modal>
           )}
       </ModalProvider>
-      {conversations.length === 0 && (
+      {noActiveConversations && (
         <StyledPTag>Add users to start encrypted chats.</StyledPTag>
       )}
       <StyledLogoutButton onClick={() => redirectToLogout()}>Sign Out</StyledLogoutButton>
