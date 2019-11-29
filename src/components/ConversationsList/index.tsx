@@ -9,7 +9,8 @@ import { StyledList,
          StyledLogoutButton,
          ScrollableDiv,
          StyledPTag,
-         CircleContainer } from './style'
+         CircleContainer,
+         OnlineStatus } from './style'
 import { Plus } from 'styled-icons/fa-solid/Plus'
 
 interface Props {
@@ -126,6 +127,7 @@ const ConversationsList: React.FC<Props> = (props) => {
                                                   conversation.unread_messages = false;
                                                   removeAlertedConversation(conversation.id)
                                                   }}>
+                    <OnlineStatus></OnlineStatus>
                     {currentUserId === conversation.author.id ? conversation.receiver.name : conversation.author.name }
                    </StyledListItem>
                  </div>})}
