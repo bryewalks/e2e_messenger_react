@@ -9,7 +9,7 @@ export const StyledList = styled.div`
 `
 
 export const StyledListItem = styled.h1<{highlighted: boolean, alert: boolean}>`
-  margin: 5% 15% 5% 15%;
+  margin: 5% 22% 5% 15%;
   padding: 10px;
   border-radius: 25px;
   color: white;
@@ -112,4 +112,15 @@ export const StyledPTag = styled.p`
   justify-content: center;
   color: white;
   margin: 50px;
+`
+
+export const OnlineStatus = styled.div`
+  height: .6em;
+  width: .6em;
+  background-color: grey;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 15px;
+  margin-right: 15px;
 `
